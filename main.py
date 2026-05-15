@@ -5,11 +5,15 @@ from schema import ProductCreate, CategoryCreate, ProductUpdate, CategoryUpdate,
 from models import Products, Category
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
+from fastapi.templating import Jinja2Templates
+from fastapi.requests import Request
+
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-
+templates = Jinja2Templates(directory="templates")
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,11 +33,13 @@ def test_db(db: Session = Depends(get_db)):
     except Exception as e:
         return {"error": str(e)}
 
-@app.get("/")
-def home():
-    return {
-        "message": "FastAPI is working"
-    }
+
+# @app.get("/")
+# def home(request: Request):
+#     return templates.TemplateResponse(
+#         "index.html",
+#         {"request": request}
+#     )
     
 @app.get('/api/products')
 def get_all_products(page:int = 1, limit : int=10, db:Session= Depends(get_db)):
