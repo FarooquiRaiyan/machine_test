@@ -34,12 +34,12 @@ def test_db(db: Session = Depends(get_db)):
         return {"error": str(e)}
 
 
-# @app.get("/")
-# def home(request: Request):
-#     return templates.TemplateResponse(
-#         "index.html",
-#         {"request": request}
-#     )
+@app.get("/")
+def home(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {"request": request}
+    )
     
 @app.get('/api/products')
 def get_all_products(page:int = 1, limit : int=10, db:Session= Depends(get_db)):
