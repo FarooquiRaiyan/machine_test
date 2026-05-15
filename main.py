@@ -15,6 +15,14 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+
+@app.get("/")
+def home():
+    return {
+        "message": "FastAPI is working"
+    }
+    
 @app.get('/api/products')
 def get_all_products(page:int = 1, limit : int=10, db:Session= Depends(get_db)):
     skip = (page - 1) * limit
