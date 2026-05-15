@@ -34,11 +34,12 @@ def test_db(db: Session = Depends(get_db)):
         return {"error": str(e)}
 
 
+
 @app.get("/")
 def home(request: Request):
     return templates.TemplateResponse(
-        "index.html",
-        {"request": request}
+        request=request,
+        name="index.html"
     )
     
 @app.get('/api/products')
