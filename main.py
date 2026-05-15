@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
-from db import Base, engine, Session, get_db
+from db import Base, engine, get_db
+from sqlalchemy.orm import Session
 from schema import ProductCreate, CategoryCreate, ProductUpdate, CategoryUpdate, ProductwithCategory
 from models import Products, Category
 from fastapi.middleware.cors import CORSMiddleware
