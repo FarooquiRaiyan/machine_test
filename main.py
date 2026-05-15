@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from schema import ProductCreate, CategoryCreate, ProductUpdate, CategoryUpdate, ProductwithCategory
 from models import Products, Category
 from fastapi.middleware.cors import CORSMiddleware
-
+from sqlalchemy import text
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -20,6 +20,14 @@ app.add_middleware(
 )
 
 
+
+@app.get("/test-db")
+def test_db(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {"message": "Database connected"}
+    except Exception as e:
+        return {"error": str(e)}
 
 @app.get("/")
 def home():
