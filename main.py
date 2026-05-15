@@ -3,6 +3,9 @@ from db import Base, engine, Session, get_db
 from schema import ProductCreate, CategoryCreate, ProductUpdate, CategoryUpdate, ProductwithCategory
 from models import Products, Category
 from fastapi.middleware.cors import CORSMiddleware
+
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 
 
