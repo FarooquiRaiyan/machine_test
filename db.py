@@ -8,7 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 DB_URL = os.getenv("DB_URL")
 
-engine = create_engine(DB_URL, pool_pre_ping=True)
+engine = create_engine(DB_URL, pool_pre_ping=True, connect_args={
+        "ssl": {
+            "ssl_mode": "REQUIRED"
+        }
+    })
 
 SessionLocal = sessionmaker(
     autocommit = False,

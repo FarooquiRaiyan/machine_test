@@ -13,7 +13,6 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-templates = Jinja2Templates(directory="templates")
 
 app.add_middleware(
     CORSMiddleware,
@@ -35,13 +34,7 @@ def test_db(db: Session = Depends(get_db)):
 
 
 
-@app.get("/")
-def home(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="index.html"
-    )
-    
+
 @app.get('/api/products')
 def get_all_products(page:int = 1, limit : int=10, db:Session= Depends(get_db)):
     skip = (page - 1) * limit
@@ -62,7 +55,6 @@ def get_all_products(page:int = 1, limit : int=10, db:Session= Depends(get_db)):
 @app.get('/api/products/{id}', response_model=ProductwithCategory)
 def get_single_products(id:int, db : Session = Depends(get_db)):
     product = db.query(Products).filter(Products.id == id).first()
-    
     if not product:
         raise HTTPException(status_code=404, detail="Products not Found")
     return product
@@ -72,7 +64,6 @@ def get_single_products(id:int, db : Session = Depends(get_db)):
 @app.post('/api/products')
 def add_products(product:ProductCreate, db :Session= Depends(get_db)):
     db_product = Products(name=product.name, category_id = product.category_id)
-    
     db.add(db_product)
     db.commit()
     db.refresh(db_product)
